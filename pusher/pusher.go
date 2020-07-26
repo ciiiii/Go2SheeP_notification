@@ -1,8 +1,6 @@
 package pusher
 
 import (
-	"fmt"
-
 	"github.com/ciiiii/Go2SheeP_notification/config"
 	"github.com/gin-gonic/gin"
 	notification "github.com/pusher/push-notifications-go"
@@ -28,7 +26,7 @@ type NotifyRequest struct {
 	Body      string   `json:"body"`
 }
 
-func (n NotifyRequest) send() error {
+func (n *NotifyRequest) send() (string, error) {
 	if n.Icon == "" {
 		n.Icon = "https://gotification.herokuapp.com/favicon.ico"
 	}
@@ -43,16 +41,23 @@ func (n NotifyRequest) send() error {
 	}
 	pubId, err := client.PublishToInterests(n.Interests, message)
 	if err != nil {
-		return err
+		return "", err
 	}
-	fmt.Println("Publish Id:", pubId)
-	return nil
+	return pubId, nil
 }
 
 func NotifyHandler(c *gin.Context) {
 	var notify NotifyRequest
-	c.ShouldBindJSON(&notify)
-	if err := notify.send(); err != nil {
+	if err := c.ShouldBindJSON(&notify); err != nil {
+		c.JSON(200, gin.H{
+			"success": false,
+			"message": err.Error(),
+		})
+		return
+	}
+
+	pubId, err := notify.send()
+	if err != nil {
 		c.JSON(200, gin.H{
 			"success": false,
 			"message": err.Error(),
@@ -61,5 +66,6 @@ func NotifyHandler(c *gin.Context) {
 	}
 	c.JSON(200, gin.H{
 		"success": true,
+		"pubId":   pubId,
 	})
 }

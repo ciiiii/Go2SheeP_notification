@@ -102,7 +102,7 @@ func main() {
 	r.GET("/auth", authHandler)
 	r.GET("/config", configHandler)
 
-	r.GET("/notify", pusher.NotifyHandler)
+	r.POST("/notify", pusher.NotifyHandler)
 	server := &http.Server{
 		Addr:    ":" + config.Parser().App.Port,
 		Handler: r,
