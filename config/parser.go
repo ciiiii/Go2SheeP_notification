@@ -4,13 +4,14 @@ import (
 	"os"
 	"sync"
 
-	"github.com/joho/godotenv"
 	"github.com/caarlos0/env/v6"
+	"github.com/joho/godotenv"
 )
 
 type Config struct {
 	App struct {
-		Port string `env:"PORT"`
+		Domain string `env:"DOMAIN"`
+		Port   string `env:"PORT"`
 	}
 	OAuth struct {
 		ClientId     string `env:"OAUTH_CLIENT_ID"`

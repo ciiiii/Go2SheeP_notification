@@ -70,15 +70,15 @@ func authHandler(c *gin.Context) {
 	data, _ := ioutil.ReadAll(email.Body)
 	var userInfo UserInfo
 	json.Unmarshal(data, &userInfo)
-	c.SetCookie("picture", userInfo.Picture, 3600, "/", "localhost", false, false)
-	c.SetCookie("email", userInfo.Email, 3600, "/", "localhost", false, false)
-	c.SetCookie("token", token.AccessToken, 3600, "/", "localhost", false, false)
+	c.SetCookie("picture", userInfo.Picture, 3600, "/", config.Parser().App.Domain, false, false)
+	c.SetCookie("email", userInfo.Email, 3600, "/", config.Parser().App.Domain, false, false)
+	c.SetCookie("token", token.AccessToken, 3600, "/", config.Parser().App.Domain, false, false)
 	c.Redirect(301, "/")
 }
 
 func configHandler(c *gin.Context) {
 	state := randState()
-	c.SetCookie("state", state, 3600, "/", "localhost", false, false)
+	c.SetCookie("state", state, 3600, "/", config.Parser().App.Domain, false, false)
 	c.JSON(http.StatusOK, gin.H{
 		"url": conf.AuthCodeURL(state),
 	})
