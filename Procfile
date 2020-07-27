@@ -1,2 +1,2 @@
-release: Go2SheeP_notification
-web: gotification
+web: Go2SheeP_notification
+release: gotification
