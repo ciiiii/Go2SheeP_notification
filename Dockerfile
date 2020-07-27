@@ -8,7 +8,7 @@ FROM node:alpine AS node_builder
 COPY --from=go_builder /app/go2sheep_pusher /frontend
 WORKDIR /frontend
 RUN yarn
-RUN yarn build
+RUN VUE_APP_PUSHER_INSTANCE_ID=$VUE_APP_PUSHER_INSTANCE_ID yarn build
 
 FROM alpine:latest
 RUN apk --no-cache add ca-certificates
