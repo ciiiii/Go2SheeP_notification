@@ -1,1 +1,2 @@
+release: go2sheep_notification
 web: Go2SheeP_notification
