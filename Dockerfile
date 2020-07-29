@@ -8,12 +8,12 @@ FROM node:alpine AS node_builder
 COPY --from=go_builder /app/go2sheep_pusher /frontend
 WORKDIR /frontend
 RUN yarn
-RUN VUE_APP_PUSHER_INSTANCE_ID=$VUE_APP_PUSHER_INSTANCE_ID yarn build
+ARG VUE_APP_PUSHER_INSTANCE_ID
+RUN yarn build
 
 FROM alpine:latest
 RUN apk --no-cache add ca-certificates
 COPY --from=go_builder /server .
 COPY --from=node_builder /static ./static
 RUN chmod +x ./server
-EXPOSE $PORT
 CMD ./server

@@ -22,3 +22,8 @@ jobs:
           heroku_app_name: "gotification"
           heroku_email: "allen.ccccnm@gmail.com"
           usedocker: true
+          docker_build_args: |
+            VUE_APP_PUSHER_INSTANCE_ID
+        env:
+          VUE_APP_PUSHER_INSTANCE_ID: ${{secrets.PUSHER_INSTANCE_ID}}
+            
