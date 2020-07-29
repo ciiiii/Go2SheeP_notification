@@ -73,7 +73,7 @@ func authHandler(c *gin.Context) {
 	c.SetCookie("picture", userInfo.Picture, 3600, "/", config.Parser().App.Domain, false, false)
 	c.SetCookie("email", userInfo.Email, 3600, "/", config.Parser().App.Domain, false, false)
 	c.SetCookie("token", token.AccessToken, 3600, "/", config.Parser().App.Domain, false, false)
-	c.Redirect(301, "/")
+	c.Redirect(http.StatusFound, "/")
 }
 
 func logoutHandler(c *gin.Context) {
@@ -84,7 +84,7 @@ func logoutHandler(c *gin.Context) {
 	c.SetCookie("picture", "", 0, "/", config.Parser().App.Domain, false, false)
 	c.SetCookie("email", "", 0, "/", config.Parser().App.Domain, false, false)
 	c.SetCookie("token", "", 0, "/", config.Parser().App.Domain, false, false)
-	c.Redirect(301, "/")
+	c.Redirect(http.StatusFound, "/")
 }
 
 func configHandler(c *gin.Context) {
