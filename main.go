@@ -76,6 +76,17 @@ func authHandler(c *gin.Context) {
 	c.Redirect(301, "/")
 }
 
+func logoutHandler(c *gin.Context) {
+	token, _ := c.Cookie("token")
+	if len(token) != 0 {
+		http.Post(fmt.Sprintf("https://oauth2.googleapis.com/revoke?token=%s", token), "application/x-www-form-urlencoded", nil)
+	}
+	c.SetCookie("picture", "", 0, "/", config.Parser().App.Domain, false, false)
+	c.SetCookie("email", "", 0, "/", config.Parser().App.Domain, false, false)
+	c.SetCookie("token", "", 0, "/", config.Parser().App.Domain, false, false)
+	c.Redirect(301, "/")
+}
+
 func configHandler(c *gin.Context) {
 	state := randState()
 	c.SetCookie("state", state, 3600, "/", config.Parser().App.Domain, false, false)
@@ -100,6 +111,7 @@ func main() {
 		c.HTML(http.StatusOK, "index.html", nil)
 	})
 	r.GET("/auth", authHandler)
+	r.DELETE("/auth", logoutHandler)
 	r.GET("/config", configHandler)
 
 	r.POST("/notify", pusher.NotifyHandler)
