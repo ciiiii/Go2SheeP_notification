@@ -9,6 +9,7 @@ COPY --from=go_builder /app/go2sheep_pusher /frontend
 WORKDIR /frontend
 RUN yarn
 ARG VUE_APP_PUSHER_INSTANCE_ID
+RUN echo "${VUE_APP_PUSHER_INSTANCE_ID}"
 RUN yarn build
 
 FROM alpine:latest
